@@ -113,8 +113,8 @@ function sendDailyUpdate() {
   const yesterday = getUKDate(-1);
   log('INFO', `Today: ${today} | Yesterday: ${yesterday}`);
 
-  const todaysMatches = data.matches.filter(m => m.date === today);
-  const yesterdaysMatches = data.matches.filter(m => m.date === yesterday);
+  const todaysMatches = data.matches.filter(m => m.date === today && isValidMatch(m));
+  const yesterdaysMatches = data.matches.filter(m => m.date === yesterday && isValidMatch(m));
   log('INFO', `Matches found — today: ${todaysMatches.length}, yesterday: ${yesterdaysMatches.length}`);
 
   const sections = [];

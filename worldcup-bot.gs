@@ -7,8 +7,8 @@
 // ============================================================
 
 const CONFIG = {
-  SLACK_WEBHOOK_URL: '',         // ← Paste your Slack webhook URL here before running setup()
-  DATA_URL: 'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json',
+  SLACK_WEBHOOK_URL: 'https://hooks.slack.com/services/........G',         // ← Paste your Slack webhook URL here before running setup()
+  DATA_URL: 'https://raw.githubusercontent.com/upbound-web/worldcup-live.json/refs/heads/master/2026/worldcup.json',
   LOG_SHEET_NAME: 'Logs',
   TRIGGER_HOUR: 8,               // 8 = 8am. Change if you want a different time.
   TIMEZONE: 'Europe/London',
@@ -248,14 +248,24 @@ function log(status, message) {
 //  HELPERS
 // ============================================================
 
+function isValidMatch(m) {
+  // Exclude placeholder knockout entries where teams aren't yet determined (e.g. "W83", "A1")
+  return m.team1 && m.team2 &&
+         !/^[A-Z]\d+$/.test(m.team1) &&
+         !/^[A-Z]\d+$/.test(m.team2);
+}
+
 function getUKDate(offsetDays) {
   const now = new Date();
   now.setDate(now.getDate() + offsetDays);
-  const ukTime = new Date(now.toLocaleString('en-GB', { timeZone: CONFIG.TIMEZONE }));
-  const y = ukTime.getFullYear();
-  const m = String(ukTime.getMonth() + 1).padStart(2, '0');
-  const d = String(ukTime.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: CONFIG.TIMEZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(now);
+  const get = type => parts.find(p => p.type === type).value;
+  return `${get('year')}-${get('month')}-${get('day')}`;
 }
 
 function convertToUKTime(time) {

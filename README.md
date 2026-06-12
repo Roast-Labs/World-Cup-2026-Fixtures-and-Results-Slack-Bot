@@ -42,7 +42,9 @@ On rest days it posts a friendly no-fixtures message so you know it's still runn
 
 ## Data source
 
-Match data comes from [openfootball/worldcup.json](https://github.com/openfootball/worldcup.json) — a free, public domain JSON feed that includes fixtures and results (with goalscorers) for every World Cup match. No API key required.
+Match data comes from [upbound-web/worldcup-live.json](https://github.com/upbound-web/worldcup-live.json) — a fork of the openfootball dataset kept up to date with live results during the tournament. No API key required.
+
+> **Note:** The original [openfootball/worldcup.json](https://github.com/openfootball/worldcup.json) feed was the initial data source but was not updating results in time. The `DATA_URL` in `CONFIG` has been switched to the live fork. If you have an older copy of the script, update that value.
 
 ---
 
@@ -153,7 +155,7 @@ All settings are in the `CONFIG` block at the top of `worldcup-bot.gs`:
 | Setting | Default | Description |
 |---|---|---|
 | `SLACK_WEBHOOK_URL` | _(your webhook)_ | Slack incoming webhook URL |
-| `DATA_URL` | openfootball 2026 JSON | Match data feed URL |
+| `DATA_URL` | upbound-web live fork JSON | Match data feed URL |
 | `LOG_SHEET_NAME` | `Logs` | Name of the logging sheet tab |
 | `TRIGGER_HOUR` | `8` | Hour to run daily (24hr, London time) |
 | `TIMEZONE` | `Europe/London` | Timezone for trigger and logging |
@@ -162,10 +164,11 @@ All settings are in the `CONFIG` block at the top of `worldcup-bot.gs`:
 
 ## Notes
 
-- **Score availability** — the openfootball feed is community-maintained so scores may appear a few hours after the final whistle. An 8am post covering the previous evening's matches should always have results by then.
+- **Score availability** — the live fork is community-maintained so scores may appear a few hours after the final whistle. An 8am post covering the previous evening's matches should always have results by then.
 - **BST conversion** — match times in the feed use local UTC offsets (e.g. `UTC-6`). The script converts all kick-off times to BST automatically.
 - **Rest days** — on days with no fixtures the bot still runs and posts a rest day message.
 - **Tournament dates** — the 2026 World Cup runs from **11 June to 19 July 2026**.
+- **Knockout placeholders** — before knockout stage teams are confirmed, the data source uses placeholder names (e.g. `W83`). The script filters these out so they never appear in Slack messages.
 
 ---
 
@@ -189,7 +192,7 @@ MIT — do whatever you like with it.
 
 ## Credits
 
-Match data provided by [openfootball/worldcup.json](https://github.com/openfootball/worldcup.json) — a free, open public domain football dataset maintained by the open football community. If you find this bot useful, consider giving their repo a ⭐.
+Match data provided by [upbound-web/worldcup-live.json](https://github.com/upbound-web/worldcup-live.json), a live-results fork of [openfootball/worldcup.json](https://github.com/openfootball/worldcup.json) — a free, open public domain football dataset. If you find this bot useful, consider giving both repos a ⭐.
 
 ---
 
